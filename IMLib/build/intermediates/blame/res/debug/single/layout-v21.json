@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.1.0\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.1.0\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.1.0\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "F:\\Work\\WeexWrok\\weex-new-app\\platforms\\android\\IMLib\\build\\intermediates\\exploded-aar\\com.android.support\\support-compat\\26.1.0\\res\\layout-v21\\notification_template_custom_big.xml"
+    }
+]

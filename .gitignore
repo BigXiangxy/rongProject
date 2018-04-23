@@ -8,3 +8,7 @@
 /captures
 .externalNativeBuild
 .idea/
+build/
+app/build/
+IMLib/build/
+rong/build/
