@@ -30,5 +30,5 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile project(':rong')
-//    compile 'com.github.BigXiangxy:rongProject:1.4'
+//    compile 'com.github.BigXiangxy:rongProject:1.5'
 }
