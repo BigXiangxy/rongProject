@@ -1,1 +1,1 @@
-include ':app', ':rong', ':IMLib'
+include ':app', ':rong'
