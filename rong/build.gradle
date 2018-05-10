@@ -41,7 +41,7 @@ dependencies {
     provided 'org.weex.plugin:processor:1.0.2'
     testCompile 'junit:junit:4.12'
 //    compile 'com.github.BigXiangxy:IMLibProject:1.0'
-    compile 'com.github.BigXiangxy:QYQBase:1.5'
+    compile 'com.github.BigXiangxy:QYQBase:1.6'
 //    if (project.usingWeex == "0.18.0") {
 //        compile project(':weex_sdk')
 //    } else if (project.usingWeex == "0.16.0") {

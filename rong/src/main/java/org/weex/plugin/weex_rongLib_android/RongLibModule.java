@@ -978,7 +978,7 @@ public class RongLibModule extends WXModule {
 /*--------------------------------------融云静态方法---------------------------------*/
 
     /**
-     * 连接服务器，在整个应用程序全局，只需要调用一次，需在 init(Context) 之后调用。注意：原生调用，js无需调用
+     * 连接服务器，在整个应用程序全局，只需要调用一次，需在 init(Context) 之后调用。
      *
      * @param token    token
      * @param callback

@@ -2,6 +2,7 @@ package org.weex.plugin.weex_rongLib_android;
 
 import android.util.Log;
 
+import com.base.library.MyWeexManager;
 import com.taobao.weex.WXSDKInstance;
 
 import java.util.HashMap;
@@ -20,12 +21,12 @@ public class MyConnectionStatusListener implements RongIMClient.ConnectionStatus
         Map<String, Object> params = new HashMap<>();
         params.put("connectionStatus", connectionStatus.getValue());
         params.put("connectionMsg", connectionStatus.getMessage());
-        Map<String, WXSDKInstance> wxsdkInstances = RongWeexManager.getInstance().getWXSDKInstances();
+        Map<String, WXSDKInstance> wxsdkInstances = MyWeexManager.getInstance().getWXSDKInstances();
         for (Map.Entry<String, WXSDKInstance> entry : wxsdkInstances.entrySet()) {
             //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
             WXSDKInstance instance = entry.getValue();
             if (instance != null) {
-                instance.fireGlobalEventCallback(RongWeexManager.GEN_Connection_Status, params);
+                instance.fireGlobalEventCallback(MyWeexManager.GEN_Connection_Status, params);
             }
         }
         switch (connectionStatus) {

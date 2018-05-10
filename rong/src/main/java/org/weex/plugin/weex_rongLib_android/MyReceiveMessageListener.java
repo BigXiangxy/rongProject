@@ -3,9 +3,9 @@ package org.weex.plugin.weex_rongLib_android;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.util.Log;
 
 import com.base.library.LogX;
+import com.base.library.MyWeexManager;
 import com.google.gson.Gson;
 import com.taobao.weex.WXSDKInstance;
 
@@ -41,12 +41,12 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
         Map<String, Object> params = new HashMap<>();
         params.put("message", message);
         params.put("left", left);
-        Map<String, WXSDKInstance> wxsdkInstances = RongWeexManager.getInstance().getWXSDKInstances();
+        Map<String, WXSDKInstance> wxsdkInstances = MyWeexManager.getInstance().getWXSDKInstances();
         for (Map.Entry<String, WXSDKInstance> entry : wxsdkInstances.entrySet()) {
             //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
             WXSDKInstance instance = entry.getValue();
             if (instance != null) {
-                instance.fireGlobalEventCallback(RongWeexManager.GEN_New_Message, params);
+                instance.fireGlobalEventCallback(MyWeexManager.GEN_New_Message, params);
             }
         }
         return false;
