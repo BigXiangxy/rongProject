@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import io.rong.push.notification.PushMessageReceiver;
@@ -23,7 +25,27 @@ public class MyReceivePushMseListener extends PushMessageReceiver {
 
     @Override
     public boolean onNotificationMessageArrived(Context context, PushNotificationMessage message) {
-        Log.e("rong", "--" + new Gson().toJson(message));
+//        String str=new JSONObject(message);
+//        try {
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        Log.e("rong", "--" + new Gson().toJson(message));
+        Log.e("rong", "--" + message.getPushId());
+        Log.e("rong", "--" + message.getConversationType());
+        Log.e("rong", "--" + message.getReceivedTime());
+        Log.e("rong", "--" + message.getObjectName());
+        Log.e("rong", "--" + message.getSenderId());
+        Log.e("rong", "--" + message.getSenderName());
+        Log.e("rong", "--" + message.getSenderPortrait());
+        Log.e("rong", "--" + message.getTargetId());
+        Log.e("rong", "--" + message.getTargetUserName());
+        Log.e("rong", "--" + message.getPushTitle());
+        Log.e("rong", "--" + message.getPushContent());
+        Log.e("rong", "--" + message.getPushData());
+        Log.e("rong", "--" + message.getExtra());
+        Log.e("rong", "--" + message.getPushFlag());
 //        if (message.getTargetId().equals(Constant.USER_ID_TYPE.TASK_HALL)) return true;
         return false;
     }
