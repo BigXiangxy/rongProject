@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
+import com.base.library.LogX;
 
 import java.util.List;
 
@@ -20,33 +18,26 @@ import io.rong.push.notification.PushNotificationMessage;
  */
 public class MyReceivePushMseListener extends PushMessageReceiver {
     private static final String TAG = "RongPushListener";
+    public static final String PUSH_RONG_INTENT_KEY = "push_rong_intent_key";
 //    public static final String RE_TAG = "re_tag";
 //    public static final String RE_ID_TAG = "re_id_tag";
 
     @Override
     public boolean onNotificationMessageArrived(Context context, PushNotificationMessage message) {
-//        String str=new JSONObject(message);
-//        try {
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        Log.e("rong", "--" + new Gson().toJson(message));
-        Log.e("rong", "--" + message.getPushId());
-        Log.e("rong", "--" + message.getConversationType());
-        Log.e("rong", "--" + message.getReceivedTime());
-        Log.e("rong", "--" + message.getObjectName());
-        Log.e("rong", "--" + message.getSenderId());
-        Log.e("rong", "--" + message.getSenderName());
-        Log.e("rong", "--" + message.getSenderPortrait());
-        Log.e("rong", "--" + message.getTargetId());
-        Log.e("rong", "--" + message.getTargetUserName());
-        Log.e("rong", "--" + message.getPushTitle());
-        Log.e("rong", "--" + message.getPushContent());
-        Log.e("rong", "--" + message.getPushData());
-        Log.e("rong", "--" + message.getExtra());
-        Log.e("rong", "--" + message.getPushFlag());
-//        if (message.getTargetId().equals(Constant.USER_ID_TYPE.TASK_HALL)) return true;
+        LogX.i(TAG, "--" + message.getPushId()
+                + "--" + message.getConversationType()
+                + "--" + message.getReceivedTime()
+                + "--" + message.getObjectName()
+                + "--" + message.getSenderId()
+                + "--" + message.getSenderName()
+                + "--" + message.getSenderPortrait()
+                + "--" + message.getTargetId()
+                + "--" + message.getTargetUserName()
+                + "--" + message.getPushTitle()
+                + "--" + message.getPushContent()
+                + "--" + message.getPushData()
+                + "--" + message.getExtra()
+                + "--" + message.getPushFlag());
         return false;
     }
 
@@ -56,8 +47,6 @@ public class MyReceivePushMseListener extends PushMessageReceiver {
         startActivity(context, context.getApplicationInfo().packageName, message);
         return true;
     }
-
-    public static final String PUSH_RONG_INTENT_KEY = "push_rong_intent_key";
 
     private void startActivity(Context context, String pkgName, PushNotificationMessage message) {
         if (TextUtils.isEmpty(pkgName)) return;

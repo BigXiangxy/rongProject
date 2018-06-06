@@ -13,8 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.base.library.LogX;
 import com.base.library.MyWeexManager;
+import com.base.library.SharedPreferencesHelper;
 import com.google.gson.Gson;
 import com.taobao.weex.WXSDKInstance;
 
@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.push.notification.PushNotificationMessage;
+import io.rong.imlib.model.UserInfo;
+import io.rong.message.TextMessage;
 
 
 /**
@@ -33,8 +33,14 @@ import io.rong.push.notification.PushNotificationMessage;
  */
 public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
     public static int NotificationID = 123278;
+    public static final String channelID = "rong_nt";
+    public static final String SHOWWW = "SHOWWW";
+    public static final String SHOWVV = "SHOVVV";
+    public static final String shareP = "PUSH_SP";
     private Context context;
     private NotificationManager mNotificationManager;
+    public static final String RONG_INTENT_KEY = "rong_s_key";
+    private static final String TAG = "ReceiveMessage";
 
     public MyReceiveMessageListener(Context context) {
         this.context = context;
@@ -49,7 +55,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
      */
     @Override
     public boolean onReceived(final Message message, int left) {//开发者根据自己需求自行处理
-        Log.e("MessageListener", "rong--" + new Gson().toJson(message));
+        Log.i(TAG, "rong--" + new Gson().toJson(message));
         Map<String, Object> params = new HashMap<>();
         params.put("message", message);
         params.put("left", left);
@@ -61,29 +67,46 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                 instance.fireGlobalEventCallback(MyWeexManager.GEN_New_Message, params);
             }
         }
+        showNotification(message);
         return false;
     }
 
-    private void showNotification(final Conversation.ConversationType conversationType, final String targentId, final String title, final String content, final String ticker) {
-//        if (targentId.equals(Constant.USER_ID_TYPE.TASK_HALL)) return;
-//        showNotification(conversationType, targentId, title, content, ticker, null);
-    }
+    private void showNotification(Message message) {
+        String con = null;
+        if ("QYC:Template".equals(message.getObjectName())) {
+            con = "收到一条业务消息，请注意查看！";
+        } else if ("RC:TxtMsg".equals(message.getObjectName())) {
+            TextMessage textMessage = (TextMessage) message.getContent();
+            con = textMessage.getContent();
+        } else if ("RC:VcMsg".equals(message.getObjectName())) {
+            con = "[语音]";
+        } else if ("RC:ImgMsg".equals(message.getObjectName())) {
+            con = "[图片]";
+        }
 
-    private void showNotification(final Conversation.ConversationType conversationType, final String targentId, final String title, final String content, final String ticker, final String msgType) {
-        if (isAppIsInBackground(context)) {//在后台
-
+        if (message != null && isAppIsInBackground(context)) {//在后台
+            UserInfo userInfo = message.getContent().getUserInfo();
+            if (TextUtils.isEmpty(con) || userInfo == null || TextUtils.isEmpty(userInfo.getName()))
+                return;
+            buildNotification(userInfo.getName(), con, message);
         }
     }
 
 
-
-    private void buildNotification(String title, String content) {
+    private void buildNotification(String title, String content, Message message) {
         if (mNotificationManager == null)
             mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "123");
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelID);
 
         Intent intent = new Intent(context.getApplicationInfo().packageName + ".main");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(RONG_INTENT_KEY, message);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context, shareP);
+        Boolean sound = (Boolean) sharedPreferencesHelper.getSharedPreference(SHOWWW, Boolean.FALSE);
+        Boolean vibrate = (Boolean) sharedPreferencesHelper.getSharedPreference(SHOWVV, Boolean.FALSE);
+        int defaults = Notification.DEFAULT_LIGHTS;
+        if (sound) defaults |= Notification.DEFAULT_SOUND;
+        if (vibrate) defaults |= Notification.DEFAULT_VIBRATE;
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentTitle(title)//设置通知栏标题
                 .setContentText(content) //设置通知栏显示内容
@@ -94,7 +117,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                 //.setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
                 .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
                 .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
-                .setDefaults(Notification.DEFAULT_ALL);//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
+                .setDefaults(defaults);//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
         //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
 //                .setSmallIcon(R.drawable.ic_luncher);//设置通知小ICON
         mNotificationManager.notify(NotificationID, mBuilder.build());
