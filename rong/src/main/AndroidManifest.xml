@@ -23,6 +23,7 @@
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="${RONG_APP_KEY}" />
+
         <service
             android:name="io.rong.imlib.ipc.RongService"
             android:exported="true"
@@ -87,7 +88,17 @@
         </receiver>
 
         <!--必选： SDK 核心功能-->
-
+        <receiver
+            android:name="org.weex.plugin.weex_rongLib_android.MyReceivePushMseListener"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
+            </intent-filter>
+        </receiver>
         <!-- end -->
     </application>
 
