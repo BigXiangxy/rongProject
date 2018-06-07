@@ -36,6 +36,9 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
     public static final String channelID = "rong_nt";
     public static final String SHOWWW = "SHOWWW";
     public static final String SHOWVV = "SHOVVV";
+    public static final String SHOWII = "SHOWII";//应用前台是否显示
+    public static final String SHOWGG = "SHOWGG";//聊天界面是否显示
+    public static Boolean SHOWKK = false;//是否在聊天界面
     public static final String shareP = "PUSH_SP";
     private Context context;
     private NotificationManager mNotificationManager;
@@ -84,7 +87,10 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
             con = "[图片]";
         }
 
-        if (message != null && isAppIsInBackground(context)) {//在后台
+        SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(context, shareP);
+        Boolean ii = (Boolean) sharedPreferencesHelper.getSharedPreference(SHOWII, Boolean.TRUE);
+        Boolean gg = (Boolean) sharedPreferencesHelper.getSharedPreference(SHOWGG, Boolean.TRUE);
+        if (message != null && (ii || isAppIsInBackground(context)) && (gg || SHOWKK)) {
             UserInfo userInfo = message.getContent().getUserInfo();
             if (TextUtils.isEmpty(con) || userInfo == null || TextUtils.isEmpty(userInfo.getName()))
                 return;
@@ -118,7 +124,7 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
                 .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
                 .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
                 .setDefaults(defaults)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
-        //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
+                //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
                 .setSmallIcon(context.getApplicationInfo().icon);//设置通知小ICON
         mNotificationManager.notify(NotificationID, mBuilder.build());
     }
